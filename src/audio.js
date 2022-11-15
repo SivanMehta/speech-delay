@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from 'react';
 
-function Audio() {
+function Slider({ delay, setDelay }) {
+    const onChange = function (event) {
+        setDelay(event.target.value);
+    }
+    return (
+        <label htmlFor="range">Delay of {delay}ms
+            <input
+                onChange={ onChange }
+                type="range"
+                min="0"
+                max="2"
+                value={ delay }
+                id="range"
+                name="range"
+                step="0.1"/>
+        </label>
+    )
+}
+
+export default function Audio() {
     const context = new AudioContext();
     const source = context.createBufferSource();
 
     const loadNoise = async () => {
         const audioBuffer = context.createBuffer(2, context.sampleRate * 3, context.sampleRate);
-
         // fill with white noise
         for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
             // This gives us the actual ArrayBuffer that contains the data
@@ -27,12 +45,15 @@ function Audio() {
     })
 
     function play() {
-        source.play();
+        source.start();
     }
+
+    const [ delay, setDelay ] = useState(0);
 
     return (
         <>
-            <button onClick={ play }>play audio</button>
+            <Slider delay={delay} setDelay={setDelay} />
+            <button onClick={ play }>Start playback</button>
         </>
     )
 
