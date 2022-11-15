@@ -19,7 +19,7 @@ function Slider({ delay, setDelay }) {
     )
 }
 
-export default function Audio() {
+export default function Audio({ delay, setDelay }) {
     const context = new AudioContext();
     const source = context.createBufferSource();
 
@@ -42,18 +42,17 @@ export default function Audio() {
 
     useEffect(async () => {
         loadNoise();
-    })
+    });
 
     function play() {
         source.start();
     }
 
-    const [ delay, setDelay ] = useState(0);
-
     return (
         <>
             <Slider delay={delay} setDelay={setDelay} />
-            <button onClick={ play }>Start playback</button>
+            <button href="#" role = "button" onClick={ play }>Enable Microphone</button>
+            <button href="#" role = "button">Disable Microphone</button>
         </>
     )
 

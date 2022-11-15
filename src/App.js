@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import * as constants from './constants';
 import Audio from './Audio';
 
 function App() {
+  const [ delay, setDelay ] = useState(1);
+
   return (
     <div className="grid">
-      <div>
-        <Audio />
-      </div>
+      <Audio
+        delay={delay}
+        setDelay={setDelay}/>
       <div className='grid-fluid'>
         
       </div>
