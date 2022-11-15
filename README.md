@@ -5,7 +5,8 @@ Simulating speech delay. Also help from [rollup] and [pico]
 ## Run build locally
 
 ```bash
-npm run build
+npm ci # only needs to be run once
+npm run build # build:watch for fast turnarounds
 ```
 
 ## Serve files locally
