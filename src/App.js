@@ -7,12 +7,14 @@ function App() {
 
   return (
     <div className="grid">
-      <Audio
-        delay={delay}
-        setDelay={setDelay}/>
-        <div>
-          <Text />
-        </div>
+      <div>
+        <Audio
+          delay={delay}
+          setDelay={setDelay}/>
+      </div>
+      <div>
+        <Text />
+      </div>
     </div>
   );
 }
