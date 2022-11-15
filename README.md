@@ -1,4 +1,4 @@
-Simulating an elevator. Also help from [rollup] and [pico]
+Simulating speech delay. Also help from [rollup] and [pico]
 
 [rollup]: https://rollupjs.org/guide/en/
 
