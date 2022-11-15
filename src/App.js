@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Audio from './Audio';
+import Audio from './audio';
 
 function App() {
   const [ delay, setDelay ] = useState(1);
