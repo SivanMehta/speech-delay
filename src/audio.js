@@ -66,8 +66,7 @@ export default function Audio({ delay, setDelay }) {
     return (
         <>
             <Slider delay={delay} setDelay={setDelay} />
-            <button href="#" role = "button" onClick={ play }>Enable Playback</button>
-            <button href="#" role = "button">Disable Playback</button>
+            <button href="#" role = "button" onClick={ play }>Start Playback</button>
         </>
     )
 
