@@ -39,7 +39,7 @@ function loadRandomNoise(context, source) {
 export default function Audio({ delay, setDelay }) {
     const [ enabled, setEnabled ] = useState(false);
     const context = new AudioContext();
-    let source
+    let source;
 
     const loadMicrophone = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
