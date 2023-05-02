@@ -25,18 +25,25 @@ async function getStream() {
 
 async function toggle(audio, setAudio) {
     if(!audio.playing) {
-       const stream = await getStream();
-       const context = new AudioContext();
-       const microphone = context.createMediaStreamSource(stream);
-       microphone.connect(context.destination);
-       setAudio({
-            microphone,
-            playing: true
-       })
-    } else {
-        audio.microphone.disconnect();
+        // get an active audio stream
+        const stream = await getStream();
+        // create <audio /> tag (the "speaker")
+        const speaker = new AudioContext();
+        // tell the stream to come out of the "speaker"
+        const sound = speaker.createMediaStreamSource(stream);
+        // turn on the "speaker"
+        sound.connect(speaker.destination);
+        // tell react to re-render
         setAudio({
-            microphone: null,
+            sound,
+            playing: true
+        });
+    } else {
+        // turn off the "speaker"
+        audio.sound.disconnect();
+        // tear down the <audio /> tag
+        setAudio({
+            sound: null,
             playing: false
         })
     }
@@ -45,7 +52,7 @@ async function toggle(audio, setAudio) {
 export default function Audio({ delay, setDelay }) {
     const [ enabled, setEnabled ] = useState(true);
     const [ audio, setAudio ] = useState({
-        microphone: null,
+        sound: null,
         playing: false
     });
 
