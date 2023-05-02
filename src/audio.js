@@ -19,43 +19,46 @@ function Slider({ delay, setDelay }) {
     )
 }
 
-function loadRandomNoise(context, source) {
-    const audioBuffer = context.createBuffer(2, context.sampleRate * 3, context.sampleRate);
-        // fill with white noise
-        for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
-            // This gives us the actual ArrayBuffer that contains the data
-            const nowBuffering = audioBuffer.getChannelData(channel);
-            for (let i = 0; i < audioBuffer.length; i++) {
-              // Math.random() is in [0; 1.0]
-              // audio needs to be in [-1.0; 1.0]
-              nowBuffering[i] = Math.random() * 2 - 1;
-            }
-        }
+async function getStream() {
+    return navigator.mediaDevices.getUserMedia({ audio: true });
+}
 
-        source.buffer = audioBuffer;
-        source.connect(context.destination);
+async function toggle(audio, setAudio) {
+    if(!audio.playing) {
+       const stream = await getStream();
+       const context = new AudioContext();
+       const microphone = context.createMediaStreamSource(stream);
+       microphone.connect(context.destination);
+       setAudio({
+            microphone,
+            playing: true
+       })
+    } else {
+        audio.microphone.disconnect();
+        setAudio({
+            microphone: null,
+            playing: false
+        })
+    }
 }
 
 export default function Audio({ delay, setDelay }) {
-    const [ enabled, setEnabled ] = useState(false);
-    const context = new AudioContext();
-    let source;
+    const [ enabled, setEnabled ] = useState(true);
+    const [ audio, setAudio ] = useState({
+        microphone: null,
+        playing: false
+    });
 
-    const loadMicrophone = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        if(stream) {
-            source = context.createMediaStreamSource(stream);
-            setEnabled(true);
+    const checkPermissions = async () => {
+        const stream = await getStream();
+        if(!stream) {
+            setEnabled(false)
         }
     }
 
     useEffect(async () => {
-        loadMicrophone();
+        checkPermissions();
     });
-
-    function play() {
-        source.start();
-    }
 
     if(!enabled) {
         return (
@@ -63,10 +66,12 @@ export default function Audio({ delay, setDelay }) {
         )
     }
 
+    const text = (audio.playing ? 'Stop' : 'Start') + ' playback';
+
     return (
         <>
             <Slider delay={delay} setDelay={setDelay} />
-            <button href="#" role = "button" onClick={ play }>Start Playback</button>
+            <button href="#" role = "button" onClick={ () => toggle(audio, setAudio) }>{ text }</button>
         </>
     )
 

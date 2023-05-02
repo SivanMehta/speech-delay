@@ -3,7 +3,7 @@ import Audio from './audio';
 import Text from './text';
 
 function App() {
-  const [ delay, setDelay ] = useState(1);
+  const [ delay, setDelay ] = useState(0);
 
   return (
     <div className="grid">
@@ -18,6 +18,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
